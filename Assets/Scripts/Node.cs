@@ -4,15 +4,45 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public Color hoverColor;
+
+    private GameObject turret;
+
+    private Renderer rend;
+    private Color startColor;
+
+    public Vector3 buildOffset;
+
+    private void Start()
     {
-        
+        rend = GetComponent<Renderer>();
+        startColor = rend.material.color;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnMouseDown()
     {
-        
+        if (turret != null)
+        {
+            Debug.Log("Can't build there! - TODO: Display on screen");
+            return;
+        }
+
+        // Build a turret
+        GameObject turretToBuild = BuildManager.instance.GetTurretToBuild();
+        turret = (GameObject)Instantiate(turretToBuild, transform.position + buildOffset, transform.rotation);
+
+
     }
+
+    private void OnMouseEnter()
+    {
+        GetComponent<Renderer>().material.color = hoverColor;
+    }
+
+    private void OnMouseExit()
+    {
+        rend.material.color = startColor;
+    }
+
 }
